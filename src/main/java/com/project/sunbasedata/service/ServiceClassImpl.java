@@ -57,7 +57,11 @@ public class ServiceClassImpl implements ServiceClass{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        int status_code = httpresponse.getStatusLine().getStatusCode();
 
+        if(status_code==500){
+            return "unauth";
+        }
         String responseData = null;
         try {
             responseData = EntityUtils.toString(httpresponse.getEntity());
@@ -65,7 +69,7 @@ public class ServiceClassImpl implements ServiceClass{
             throw new RuntimeException(e);
         }
         JSONObject json = new JSONObject(responseData);
-
+        System.out.println(json.getString("access_token"));
         return json.getString("access_token");
     }
 
@@ -200,8 +204,7 @@ public class ServiceClassImpl implements ServiceClass{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(httpresponse.getStatusLine().getStatusCode());
-        System.out.println(responseData.trim());
+
         return responseData.trim();
     }
 

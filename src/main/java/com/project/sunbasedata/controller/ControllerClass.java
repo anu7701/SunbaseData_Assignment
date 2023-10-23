@@ -26,6 +26,12 @@ public class ControllerClass {
     @PostMapping("/login")
     public ModelAndView authorization(@RequestParam String username , @RequestParam String password){
         access_token = serviceClass.authenticationService(username,password);
+        if(access_token=="unauth") {
+            ModelAndView modelAndView = new ModelAndView("login");
+            modelAndView.addObject("error",access_token);
+            return modelAndView;
+        }
+
         return new ModelAndView("redirect:/api/customers");
     }
 
